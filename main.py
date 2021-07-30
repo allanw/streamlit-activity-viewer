@@ -8,6 +8,15 @@ import numpy as np
 import strava
 from pandas.api.types import is_numeric_dtype
 
+hide_streamlit_style = """
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style>
+
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+
 st.title = "Run With Al"
 
 st.markdown(
@@ -74,4 +83,4 @@ else:
 
 map_data = data[['latitude', 'longitude']]
 
-st.map(map_data)
+# st.map(map_data)
