@@ -2,31 +2,21 @@ import base64
 
 import altair as alt
 import streamlit as st
+import pandas as pd
+import numpy as np
 
 import strava
 from pandas.api.types import is_numeric_dtype
 
-
-st.set_page_config(
-    page_title="Streamlit Activity Viewer for Strava",
-    page_icon=":circus_tent:",
-)
-
-st.image("https://analytics.gssns.io/pixel.png")
-
-strava_header = strava.header()
+st.title = "Run With Al"
 
 st.markdown(
     """
-    # :circus_tent: Streamlit Activity Viewer for Strava
-    This is a proof of concept of a [Streamlit](https://streamlit.io/) application that implements the [Strava API](https://developers.strava.com/) OAuth2 authentication flow.
-    The source code can be found at [my GitHub](https://github.com/AartGoossens/streamlit-activity-viewer) and is licensed under an [MIT license](https://github.com/AartGoossens/streamlit-activity-viewer/blob/main/LICENSE).
-
-    [Get in touch me with me](https://gssns.io/services/) if you want me to build you an application on top of this one, or a similar application.
+    # Run With Al
     """
 )
 
-strava_auth = strava.authenticate(header=strava_header, stop_if_unauthenticated=False)
+strava_auth = {'access_token': '6be10feca5935c51c1550559344a9cbf4c850393'}
 
 if strava_auth is None:
     st.markdown("Click the \"Connect with Strava\" button at the top to login with your Strava account and get started.")
@@ -40,6 +30,10 @@ if strava_auth is None:
 
 activity = strava.select_strava_activity(strava_auth)
 data = strava.download_activity(activity, strava_auth)
+
+query_params = st.experimental_get_query_params()
+
+st.markdown(query_params)
 
 
 csv = data.to_csv()
@@ -77,3 +71,7 @@ if selected_columns:
         st.altair_chart(altair_chart, use_container_width=True)
 else:
     st.write("No column(s) selected")
+
+map_data = data[['latitude', 'longitude']]
+
+st.map(map_data)
