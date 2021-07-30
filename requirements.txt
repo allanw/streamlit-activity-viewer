@@ -1,3 +1,4 @@
 arrow
 httpx
 sweat
+bokeh
